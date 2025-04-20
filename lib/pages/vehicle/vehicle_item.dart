@@ -4,7 +4,19 @@ import 'package:flutter/material.dart';
 import '../../design/dimensions.dart';
 
 class VehicleItem extends StatelessWidget {
-  const VehicleItem({super.key});
+
+  final String title;
+  final String driver;
+  final String state;
+  final Widget image;
+
+  const VehicleItem({
+    super.key,
+    required this.title,
+    required this.driver,
+    required this.state,
+    required this.image,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +35,7 @@ class VehicleItem extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.only(left: padding8, right: padding16),
             child: Row(
-              children: <Widget>[vehicleMotorcycleImage, _title(), _state()],
+              children: <Widget>[image, _title(), _state()],
             ),
           ),
         ),
@@ -40,43 +52,31 @@ class VehicleItem extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Text(
-              'BMW GS-7638',
+              title,
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
-              style: TextStyle(
+              style: const TextStyle(
                 color: secondaryColor,
                 fontSize: fontSize14,
                 fontWeight: FontWeight.w600,
               ),
             ),
-
-            // Text(
-            //   'No driver',
-            // maxLines: 1,
-            // overflow: TextOverflow.ellipsis,
-            //   style: TextStyle(
-            //     color: secondaryVariantColor,
-            //     fontSize: fontSize14,
-            //     fontWeight: FontWeight.w400,
-            //   ),
-            // ),
             RichText(
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
-              text: const TextSpan(
-                style: TextStyle(fontSize: fontSize14),
+              text: TextSpan(
+                style: const TextStyle(fontSize: fontSize14),
                 children: <TextSpan>[
-                  TextSpan(
+                  const TextSpan(
                     text: 'Driver: ',
                     style: TextStyle(
                       color: secondaryVariantColor,
                       fontWeight: FontWeight.w400,
                     ),
                   ),
-
                   TextSpan(
-                    text: 'Paul',
-                    style: TextStyle(
+                    text: driver,
+                    style: const TextStyle(
                       color: secondaryColor,
                       fontWeight: FontWeight.w600,
                     ),
@@ -97,9 +97,9 @@ class VehicleItem extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           statePickupImage,
-          const Text(
-            'pickup',
-            style: TextStyle(
+          Text(
+            state,
+            style: const TextStyle(
               color: secondaryVariantColor,
               fontSize: fontSize12,
               fontWeight: FontWeight.w400,
@@ -110,3 +110,4 @@ class VehicleItem extends StatelessWidget {
     );
   }
 }
+

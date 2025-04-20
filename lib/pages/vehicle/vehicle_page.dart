@@ -8,21 +8,28 @@ class VehiclePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          'Dispatcher by san',
-          style: TextStyle(
-            color: primaryColor,
-            fontSize: fontSize16,
-            fontWeight: FontWeight.w500,
+    return Column(
+      children: [
+        Container(
+          color: surfaceColor,
+          padding: const EdgeInsets.symmetric(vertical: 16),
+          alignment: Alignment.center,
+          child: const Text(
+            'Dispatcher by san',
+            style: TextStyle(
+              color: primaryColor,
+              fontSize: fontSize16,
+              fontWeight: FontWeight.w500,
+            ),
           ),
         ),
-        centerTitle: true,
-        backgroundColor: surfaceColor,
-        elevation: 0,
-      ),
-      body: Container(color: backgroundColor, child: const VehicleList()),
+        Expanded(
+          child: Container(
+            color: backgroundColor,
+            child: const VehicleList(),
+          ),
+        ),
+      ],
     );
   }
 }

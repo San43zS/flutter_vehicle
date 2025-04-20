@@ -1,34 +1,70 @@
 import 'package:first_project/design/dimensions.dart';
+import 'package:first_project/design/images.dart';
 import 'package:first_project/design/widget/accent_button.dart';
 import 'package:first_project/pages/vehicle/vehicle_item.dart';
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class VehicleList extends StatelessWidget {
   const VehicleList({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Stack(children: <Widget>[_list(), _updateButton()]);
+    return Stack(
+      children: <Widget>[
+        _listFromFirestore(),
+      ],
+    );
   }
 
-  Widget _list() {
-    return ListView.separated(
-      itemCount: 15,
-      padding: const EdgeInsets.only(
-        left: padding16,
-        top: padding16,
-        right: padding16,
-      ),
-      separatorBuilder: (BuildContext context, int index) {
-        return const SizedBox(height: height8);
-      },
-      itemBuilder: (BuildContext context, int index) {
-        return const VehicleItem();
+  Widget _listFromFirestore() {
+    return StreamBuilder<QuerySnapshot>(
+      stream: FirebaseFirestore.instance.collection('cars').snapshots(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: CircularProgressIndicator());
+        }
+
+        if (snapshot.hasError) {
+          return const Center(child: Text('Ошибка загрузки данных'));
+        }
+
+        final cars = snapshot.data?.docs ?? [];
+
+        if (cars.isEmpty) {
+          return const Center(child: Text('Список пуст'));
+        }
+
+        return ListView.separated(
+          padding: const EdgeInsets.only(
+            left: padding16,
+            top: padding16,
+            right: padding16,
+          ),
+          itemCount: cars.length,
+          separatorBuilder: (context, index) => const SizedBox(height: height8),
+          itemBuilder: (context, index) {
+            final car = cars[index].data() as Map<String, dynamic>;
+
+            return VehicleItem(
+              title: car['title'] ?? 'Без названия',
+              driver: car['description'] ?? 'Неизвестный',
+              state: 'pickup',
+              image: car['images'] != null &&
+                  car['images'] is List &&
+                  car['images'].isNotEmpty
+                  ? Image.network(
+                car['images'][0],
+                width: 65,
+                height: 40,
+                fit: BoxFit.contain,
+              )
+                  : vehicleMotorcycleImage,
+            );
+          },
+        );
       },
     );
   }
 
-  Widget _updateButton() {
-    return AccentButton(title: 'Update', onTap: () {});
-  }
 }
