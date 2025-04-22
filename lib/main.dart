@@ -19,7 +19,7 @@ void main() async {
     print('Caught Flutter error: ${details.exception}');
   };
 
-  await FirebaseAuth.instance.signOut();
+  //await FirebaseAuth.instance.signOut();
   runZonedGuarded(() {
     runApp(const MyApp());
   }, (error, stackTrace) {

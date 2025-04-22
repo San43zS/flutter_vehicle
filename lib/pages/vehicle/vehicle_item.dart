@@ -1,21 +1,23 @@
 import 'package:first_project/design/colors.dart';
 import 'package:first_project/design/images.dart';
+import 'package:first_project/pages/vehicle/itemDetails.dart';
 import 'package:flutter/material.dart';
 import '../../design/dimensions.dart';
 
 class VehicleItem extends StatelessWidget {
-
   final String title;
   final String driver;
   final String state;
-  final Widget image;
+  final String? imageUrl;
+  final int index;
 
   const VehicleItem({
     super.key,
     required this.title,
     required this.driver,
     required this.state,
-    required this.image,
+    this.imageUrl,
+    required this.index
   });
 
   @override
@@ -31,16 +33,45 @@ class VehicleItem extends StatelessWidget {
         ),
         child: InkWell(
           borderRadius: BorderRadius.circular(radius8),
-          onTap: () {},
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => VehicleDetailsScreen(
+                  title: title,
+                  driver: driver,
+                  state: state,
+                  index: index,
+                ),
+              ),
+            );
+          },
           child: Padding(
             padding: const EdgeInsets.only(left: padding8, right: padding16),
             child: Row(
-              children: <Widget>[image, _title(), _state()],
+              children: <Widget>[
+                _buildImage(),
+                _title(),
+                _state(),
+              ],
             ),
           ),
         ),
       ),
     );
+  }
+
+  Widget _buildImage() {
+    if (imageUrl != null && imageUrl!.isNotEmpty) {
+      return Image.network(
+        imageUrl!,
+        width: 65,
+        height: 40,
+        fit: BoxFit.contain,
+      );
+    } else {
+      return vehicleMotorcycleImage;
+    }
   }
 
   Widget _title() {
@@ -110,4 +141,5 @@ class VehicleItem extends StatelessWidget {
     );
   }
 }
+
 

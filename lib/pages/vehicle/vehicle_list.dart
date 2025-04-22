@@ -50,16 +50,12 @@ class VehicleList extends StatelessWidget {
               title: car['title'] ?? 'Без названия',
               driver: car['description'] ?? 'Неизвестный',
               state: 'pickup',
-              image: car['images'] != null &&
+              imageUrl: (car['images'] != null &&
                   car['images'] is List &&
-                  car['images'].isNotEmpty
-                  ? Image.network(
-                car['images'][0],
-                width: 65,
-                height: 40,
-                fit: BoxFit.contain,
-              )
-                  : vehicleMotorcycleImage,
+                  car['images'].isNotEmpty)
+                  ? car['images'][0] as String
+                  : null,
+              index: index,
             );
           },
         );
