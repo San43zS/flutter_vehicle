@@ -1,4 +1,5 @@
 import 'package:first_project/design/colors.dart';
+import 'package:first_project/favorites_page.dart';
 import 'package:first_project/pages/vehicle/vehicle_page.dart';
 import 'package:first_project/profile.dart';
 import 'package:flutter/material.dart';
@@ -16,7 +17,7 @@ class _HomePageState extends State<HomePage> {
   final List<Widget> _pages = const [
     ProfilePage(),
     VehiclePage(),
-    ProfilePage(),
+    FavoritesPage(),
   ];
 
   @override

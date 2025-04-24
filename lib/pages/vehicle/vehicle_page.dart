@@ -10,12 +10,13 @@ class VehiclePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
+        const SizedBox(height: 32),
         Container(
           color: surfaceColor,
           padding: const EdgeInsets.symmetric(vertical: 16),
           alignment: Alignment.center,
           child: const Text(
-            'Dispatcher by san',
+            'Carman Dispatcher',
             style: TextStyle(
               color: primaryColor,
               fontSize: fontSize16,

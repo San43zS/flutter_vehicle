@@ -48,8 +48,9 @@ class VehicleList extends StatelessWidget {
 
             return VehicleItem(
               title: car['title'] ?? 'Без названия',
-              driver: car['description'] ?? 'Неизвестный',
-              state: 'pickup',
+              owner: car['owner'] ?? 'Неизвестный',
+              description: car['description'],
+              state:'state',
               imageUrl: (car['images'] != null &&
                   car['images'] is List &&
                   car['images'].isNotEmpty)

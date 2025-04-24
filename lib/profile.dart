@@ -68,7 +68,9 @@ class _ProfilePageState extends State<ProfilePage> {
       isEditing = false;
     });
 
-    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Изменения сохранены')));
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Изменения сохранены')),
+    );
   }
 
   Future<void> _deleteAccount() async {
@@ -77,19 +79,33 @@ class _ProfilePageState extends State<ProfilePage> {
       await user!.delete();
       Navigator.pushReplacementNamed(context, '/login');
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Ошибка удаления: $e')));
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Ошибка удаления: $e')),
+      );
     }
   }
 
   Widget _buildTextField(String label, TextEditingController controller, {bool enabled = false}) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 12),
+      padding: const EdgeInsets.only(bottom: 14),
       child: TextField(
         controller: controller,
         enabled: enabled,
+        style: const TextStyle(fontSize: 16),
         decoration: InputDecoration(
           labelText: label,
-          border: const OutlineInputBorder(),
+          labelStyle: const TextStyle(color: Colors.black87),
+          filled: true,
+          fillColor: Colors.white,
+          contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
+            borderSide: const BorderSide(color: Colors.black12),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
+            borderSide: const BorderSide(color: Color(0xFFFF8E1F), width: 2),
+          ),
         ),
       ),
     );
@@ -105,15 +121,18 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color(0xFFF8F8F8),
       appBar: AppBar(
-        title: const Text('Профиль'),
+        backgroundColor: Colors.white,
+        title: const Text('Профиль', style: TextStyle(color: Colors.black)),
+        elevation: 1,
         actions: [
           IconButton(
-            icon: Icon(isEditing ? Icons.close : Icons.edit),
+            icon: Icon(isEditing ? Icons.close : Icons.edit, color: const Color(0xFFFF8E1F)),
             onPressed: () => setState(() => isEditing = !isEditing),
           ),
           IconButton(
-            icon: const Icon(Icons.logout),
+            icon: const Icon(Icons.logout, color: Color(0xFFFF8E1F)),
             tooltip: 'Выйти',
             onPressed: _signOut,
           ),
@@ -122,37 +141,59 @@ class _ProfilePageState extends State<ProfilePage> {
       body: userData.isEmpty
           ? const Center(child: CircularProgressIndicator())
           : SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          children: [
-            _buildTextField('Имя', nameController, enabled: isEditing),
-            _buildTextField('Email', emailController, enabled: false),
-            _buildTextField('Дата рождения', dateOfBirthController, enabled: isEditing),
-            _buildTextField('Телефон', phoneController, enabled: isEditing),
-            _buildTextField('Адрес', addressController, enabled: isEditing),
-            _buildTextField('Биография', bioController, enabled: isEditing),
-            _buildTextField('Профессия', occupationController, enabled: isEditing),
-            _buildTextField('Веб-сайт', websiteController, enabled: isEditing),
-            _buildTextField('Соцсети', socialMediaController, enabled: isEditing),
-            _buildTextField('Доп. информация', additionalInfoController, enabled: isEditing),
-            const SizedBox(height: 24),
-            if (isEditing) ...[
-              ElevatedButton.icon(
-                onPressed: _saveChanges,
-                icon: const Icon(Icons.save),
-                label: const Text('Сохранить изменения'),
-              ),
-              const SizedBox(height: 12),
-              OutlinedButton.icon(
-                onPressed: _deleteAccount,
-                icon: const Icon(Icons.delete, color: Colors.red),
-                label: const Text(
-                  'Удалить аккаунт',
-                  style: TextStyle(color: Colors.red),
-                ),
-              ),
-            ],
-          ],
+        padding: const EdgeInsets.all(20),
+        child: Card(
+          elevation: 6,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+          child: Padding(
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              children: [
+                _buildTextField('Имя', nameController, enabled: isEditing),
+                _buildTextField('Email', emailController, enabled: false),
+                _buildTextField('Дата рождения', dateOfBirthController, enabled: isEditing),
+                _buildTextField('Телефон', phoneController, enabled: isEditing),
+                _buildTextField('Адрес', addressController, enabled: isEditing),
+                _buildTextField('Биография', bioController, enabled: isEditing),
+                _buildTextField('Профессия', occupationController, enabled: isEditing),
+                _buildTextField('Веб-сайт', websiteController, enabled: isEditing),
+                _buildTextField('Соцсети', socialMediaController, enabled: isEditing),
+                _buildTextField('Доп. информация', additionalInfoController, enabled: isEditing),
+                const SizedBox(height: 24),
+                if (isEditing) ...[
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton.icon(
+                      onPressed: _saveChanges,
+                      icon: const Icon(Icons.save),
+                      label: const Text('Сохранить изменения'),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xFFFF8E1F),
+                        foregroundColor: Colors.white,
+                        padding: const EdgeInsets.symmetric(vertical: 14),
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                        textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  SizedBox(
+                    width: double.infinity,
+                    child: OutlinedButton.icon(
+                      onPressed: _deleteAccount,
+                      icon: const Icon(Icons.delete, color: Colors.red),
+                      label: const Text('Удалить аккаунт', style: TextStyle(color: Colors.red)),
+                      style: OutlinedButton.styleFrom(
+                        side: const BorderSide(color: Colors.red),
+                        padding: const EdgeInsets.symmetric(vertical: 14),
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                      ),
+                    ),
+                  ),
+                ],
+              ],
+            ),
+          ),
         ),
       ),
     );
