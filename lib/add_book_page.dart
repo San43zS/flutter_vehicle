@@ -5,6 +5,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:first_project/design/images.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class AddBookPage extends StatefulWidget {
   const AddBookPage({super.key});
@@ -49,6 +50,8 @@ class _AddBookPageState extends State<AddBookPage> {
 
   Future<void> addBook() async {
     final imageUrl = await uploadImage();
+    final user = FirebaseAuth.instance.currentUser;
+    if (user == null) return;
 
     if (imageUrl == null) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -60,6 +63,7 @@ class _AddBookPageState extends State<AddBookPage> {
     final carData = {
       'title': titleController.text,
       'description': descriptionController.text,
+      'owner':user.email,
       'images': [imageUrl],
     };
 
@@ -77,18 +81,18 @@ class _AddBookPageState extends State<AddBookPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Добавить книгу')),
+      appBar: AppBar(title: const Text('Добавить автомобиль')),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
             TextField(
               controller: titleController,
-              decoration: const InputDecoration(labelText: 'Название книги'),
+              decoration: const InputDecoration(labelText: 'Название автомобиля'),
             ),
             TextField(
               controller: descriptionController,
-              decoration: const InputDecoration(labelText: 'Описание книги'),
+              decoration: const InputDecoration(labelText: 'Описание автомобиля'),
             ),
             const SizedBox(height: 20),
             GestureDetector(
@@ -106,7 +110,7 @@ class _AddBookPageState extends State<AddBookPage> {
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: addBook,
-              child: const Text('Добавить книгу'),
+              child: const Text('Добавить автомобиль'),
             ),
           ],
         ),

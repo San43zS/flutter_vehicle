@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:first_project/add_book_page.dart';
 import 'package:first_project/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -46,6 +47,9 @@ class MyApp extends StatelessWidget {
           }
         },
       ),
+      routes: {
+        '/addBook': (context) => const AddBookPage()
+      },
     );
   }
 }
